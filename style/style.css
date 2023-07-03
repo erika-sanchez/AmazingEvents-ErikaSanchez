@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+}
+
+
+header{
+    min-height: 10vh !important; 
+}
+nav a{
+    border-radius: 10px;
+}
+nav a:hover{
+    background-color: rgb(230, 169, 96);
+}
+main{
+    min-height: 80vh !important;
+}
+.carousel-item img{
+    height: 20rem !important;
+    width: 100%;
+    object-fit: cover !important;
+}
+.buscador{
+    margin-top:1rem ;
+    margin-bottom: 1rem;
+}
+.card-a{
+    margin-bottom: 1rem;
+}
+.card{
+    margin: 1rem;
+}
+footer{
+    min-height: 10vh !important;
+    margin-top: 1rem;
+}
