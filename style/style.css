@@ -26,9 +26,25 @@ main{
 }
 .card-a{
     margin-bottom: 1rem;
+    
+}
+.card-link{
+    margin: 1rem;
 }
 .card{
     margin: 1rem;
+    width: 19rem;
+    min-height: 25rem;
+    padding: 2px;
+    align-items: center;
+    
+}
+.card img{
+    width: 18rem;
+    margin-top: 0.5rem;
+}
+.card h4{
+    text-align: center;
 }
 footer{
     min-height: 10vh !important;
