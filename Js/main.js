@@ -16,7 +16,9 @@ function crearCard(objeto){
 }
 
 function imprimirCard (eventos){
+
     for (let evento of eventos) {
+        
         containerTarjetas.innerHTML += crearCard(evento)
     }
 }

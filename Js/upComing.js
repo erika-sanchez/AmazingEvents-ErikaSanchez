@@ -23,6 +23,7 @@ function imprimirCard (eventos, containerTarjetas){
 function filtroEventos( eventos, currentDate){
     let upComing = []
     for (let evento of eventos) {
+        
         if (evento.date > currentDate){
             upComing.push(evento)
         }
