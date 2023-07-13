@@ -39,6 +39,13 @@ main{
     align-items: center;
     
 }
+#cajaTarjetas .card{
+    height: 29rem;
+
+}
+
+
+
 .card img{
     width: 18rem;
     margin-top: 0.5rem;
