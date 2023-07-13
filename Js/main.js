@@ -33,12 +33,19 @@ console.log (data.currentDate, data.events)
 let namesEventos = data.events.map(evento => evento.name.toLowerCase())
 console.log(namesEventos);
 
-inputSearch.addEventListener('input',(e)=>{
-    let inputValue = e.target.value.toLowerCase();
-    let namesFiltrados = namesEventos.filter(evento => evento.startsWith(inputValue));
-    console.log(namesFiltrados);
-    imprimirCard(namesFiltrados);
-})
+
+inputSearch.addEventListener('input', searchInputInfo);
+
+function searchInputInfo(e) {
+    let inputValue = e.target.value;
+    let arrayObjetos = filterSearch(data.events, inputValue);
+    console.log(arrayObjetos);
+    imprimirCard(arrayObjetos);
+}
+
+function filterSearch(eventos, searchValue) {
+    return eventos.filter(evento => evento.name.toLowerCase().startsWith(searchValue.toLowerCase()));
+}
 
 //check
 let categorias = data.events.map(evento => evento.category);
@@ -46,80 +53,65 @@ let categoriasNoRepeat = new Set(categorias);
 let categoriasUnicas = Array.from(categoriasNoRepeat);
 console.log(categoriasNoRepeat);
 
-/* categoriasUnicas.forEach(elemento => crearCheckbox(elemento)) */
+let categoriasSeleccionadas = []; // Array para almacenar las categorías seleccionadas
 
 function crearCheckbox(category) {
     return `
     <li class="list-group-item">
     <input class="form-check-input me-1" type="checkbox" value="${category}" id="${category}">
     <label class="form-check-label" for="${category}">${category}</label>
-    </li>`
+    </li>`;
 }
 
 function mostrarCheckbox(array, donde) {
     donde.innerHTML = "";
-    for( let elemento of array){
-        donde.innerHTML += crearCheckbox(elemento)
+    for (let elemento of array) {
+        donde.innerHTML += crearCheckbox(elemento);
     }
 }
 
-mostrarCheckbox(categoriasUnicas, contenedorInputs );
+mostrarCheckbox(categoriasUnicas, contenedorInputs);
 
-let checkbox =document.querySelectorAll("input[type= 'checkbox']");
+let checkbox = document.querySelectorAll("input[type='checkbox']");
 
-contenedorInputs.addEventListener("change", (e)=>{
-    let categoriasFiltrados = filterCategory (data.events, e.target.value);
-    imprimirCard(categoriasFiltrados);
-    
+contenedorInputs.addEventListener("change", (e) => {
+    if (e.target.checked) {
+        categoriasSeleccionadas.push(e.target.value); // Agregar la categoría al arreglo
+    } else {
+        categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== e.target.value); // Elimina la categoría del arreglo
+    }
+
+    // Imprimir las categorías seleccionadas
+    console.log(categoriasSeleccionadas);
+
+    let categoriasFiltradas = filterCategory(data.events, categoriasSeleccionadas);
+    if (categoriasFiltradas.length == 0 ){
+        imprimirCard(data.events)
+    }else {
+        imprimirCard(categoriasFiltradas);
+    }
 });
 
-function filterCategory(lista, category){
-    const aux = lista.filter(evento => evento.category === category );
+function filterCategory(lista, categorias) {
+    const aux = lista.filter(evento => categorias.includes(evento.category));
     console.log(aux);
-    return aux
+    return aux;
 }
 
+imprimirCard(data.events);
 
 
-// inputBusqueda.addEventListener("input", (e)=>{
-//     let inputValue = e.target.value
-//     inputValue.toLowerCase()
-//     let nombresFiltrados = nombresMentores.filter(mentor => mentor.toLowerCase().startsWith(inputValue))
-//     console.log(nombresFiltrados)
-//     vaciarLi(lista)
-//     nombresFiltrados.forEach(mentor => crearLi(mentor, lista))
-
-// })
-
-// search
-
-/* console.log(window);
-
-inputTypeSearch.addEventListener( 'keyup',() =>{ 
-    containerTarjetas.innerHTML = "";
-    let keepValue = inputSearch(inputTypeSearch);
-    let eventoFilter = data.events.filter( (event) => event.name.toLocaleLowerCase().includes(keepValue));
-
-    console.log(keepValue(inputTypeSearch));
-    imprimirCard(eventoFilter)
-});
-
-function keepValue(input) {
-    let valorInputSearch = input.value;
-    return valorInputSearch
+  /* function crossedFilters(eventos, input, categoriasSeleccionadas) {
+    let first = filterSearch(eventos, input);
+    let second = filterCategory(eventos, categoriasSeleccionadas);
+    let filterFinal = first.filter(evento => second.includes(evento));
+    return filterFinal;
 }
- */
 
+function filterSearch(eventos, searchValue) {
+    return eventos.filter(evento => evento.name.toLowerCase().startsWith(searchValue.toLowerCase()));
+}
 
-// para que busque lo que este dentro del array, lo que ingresa el usuario 
-
-// imprimir la card del mentor que estoy buscando
-
-
-
-
-
-
-
-
-
+function filterCategory(eventos, categorias) {
+    return eventos.filter(evento => categorias.includes(evento.category));
+} */

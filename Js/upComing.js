@@ -10,7 +10,7 @@ function crearCard(objeto){
             </div>
             <div class="card-a d-flex  justify-content-evenly">
                 <a href="#" class="card-link">${ "$" + objeto.price}</a>
-                <a href="#" class="card-link ml-1 ">Details</a>
+                <a href="../pages/details.html?id="class="card-link ml-1 ">Details</a>
             </div>
         </div>`
 }
