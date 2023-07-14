@@ -1,4 +1,6 @@
 let containerTarjetas = document.getElementById("cajaTarjetas")
+let inputSearch = document.getElementById('inputTypeSearch');
+let contenedorInputs = document.getElementById('contenedorInputs');
 
 function crearCard(objeto){
         return` <div class="card col-5" ;">
@@ -10,27 +12,121 @@ function crearCard(objeto){
             </div>
             <div class="card-a d-flex  justify-content-evenly">
                 <a href="#" class="card-link">${ "$" + objeto.price}</a>
-                <a href="../pages/details.html?id=" class="card-link ml-1 ">Details</a>
+                <a href="../pages/details.html?id=${objeto._id}" class="card-link ml-1 ">Details</a>
             </div>
         </div>`
 }
-
-function imprimirCard (eventos, containerTarjetas){
+function imprimirCard(eventos,containerTarjetas) {
+    containerTarjetas.innerHTML = "";
     for (let evento of eventos) {
-        containerTarjetas.innerHTML += crearCard(evento);
-    }
-}
-function filtroEventos( eventos, currentDate){
-    let upComing = []
-    for (let evento of eventos) {
-        if (evento.date < currentDate){
-            upComing.push(evento)
+            containerTarjetas.innerHTML += crearCard(evento);
         }
     }
-    return upComing
+    
+
+function filtroEventos( eventos, currentDate){
+    let pastEvents = []
+    for (let evento of eventos) {
+        if (evento.date < currentDate){
+            pastEvents.push(evento)
+        }
+    }
+    return pastEvents
 }
-let upComing  = filtroEventos(data.events, data.currentDate)
+function mensaje() {
+    const mensaje = document.createElement('p');
+    mensaje.textContent = 'No se encontraron resultados.';
+    containerTarjetas.appendChild(mensaje);
+}
 
-imprimirCard(upComing, containerTarjetas)
+let pastEvents  = filtroEventos(data.events, data.currentDate)
 
-console.log (data.currentDate, data.events)
+imprimirCard(pastEvents, containerTarjetas);
+
+console.log(data.currentDate, data.events);
+
+//
+
+inputSearch.addEventListener('input', searchInputInfo);
+
+function searchInputInfo(e) {
+    let listas = inputSearch.value;
+    let checkFiltradas = arraychecked(arraycheckbox);
+    let filtrosarray = filtrosCruzados(pastEvents, listas, checkFiltradas);
+
+    containerTarjetas.innerHTML = "";
+    console.log(checkFiltradas);
+    console.log(filtrosarray);
+    if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0) {
+        return mensaje();
+    } else if (filtrosarray.length == 0 && checkFiltradas.length > 0) {
+        return mensaje();
+    } else if (checkFiltradas.length == 0) {
+        return imprimirCard(filtrosarray, containerTarjetas);
+    } else {
+        return imprimirCard(filtrosarray, containerTarjetas);
+    }
+}
+
+function filterSearch(eventos, searchValue) {
+    return eventos.filter(evento => evento.name.toLowerCase().includes(searchValue.toLowerCase()));
+}
+
+let categorias = data.events.map(evento => evento.category);
+let categoriasNoRepeat = new Set(categorias);
+let categoriasUnicas = Array.from(categoriasNoRepeat);
+
+let categoriasSeleccionadas = [];
+
+function crearCheckbox(category) {
+    return `
+        <li class="list-group-item">
+        <input class="form-check-input me-1" type="checkbox" value="${category}" id="${category}">
+        <label class="form-check-label" for="${category}">${category}</label>
+        </li>`;
+}
+
+function mostrarCheckbox(array, donde) {
+    donde.innerHTML = "";
+    for (let elemento of array) {
+        donde.innerHTML += crearCheckbox(elemento);
+    }
+}
+
+mostrarCheckbox(categoriasUnicas, contenedorInputs);
+
+let checkbox = document.querySelectorAll("input[type='checkbox']");
+let arraycheckbox = Array.from(checkbox);
+
+function arraychecked(checkbox) {
+    return checkbox.filter(checkbox => checkbox.checked == true).map(checkbox => checkbox.value);
+}
+
+contenedorInputs.addEventListener("change", (e) => {
+    let listas = inputSearch.value;
+    let checkFiltradas = arraychecked(arraycheckbox);
+    let filtrosarray = filtrosCruzados(pastEvents, listas, checkFiltradas);
+
+    containerTarjetas.innerHTML = "";
+    console.log(checkFiltradas);
+    console.log(filtrosarray);
+    if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0) {
+        return mensaje();
+    } else if (filtrosarray.length == 0 && checkFiltradas.length > 0) {
+        return mensaje();
+    } else if (checkFiltradas.length == 0) {
+        return imprimirCard(pastEvents, containerTarjetas);
+    } else {
+        return imprimirCard(filtrosarray, containerTarjetas);
+    }
+});
+
+function filterCategory(eventos, categorias) {
+    return eventos.filter(evento => categorias.includes(evento.category));
+}
+
+function filtrosCruzados(eventos, lista, categoriasSeleccionadas) {
+    let filterCategoryResult = filterCategory(eventos, categoriasSeleccionadas);
+    let filterSearchResult = filterSearch(filterCategoryResult, lista);
+    return filterSearchResult;
+}

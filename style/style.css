@@ -44,7 +44,9 @@ main{
 
 }
 
-
+#cajaTarjetas .caja{
+    height: 34rem;
+}
 
 .card img{
     width: 18rem;

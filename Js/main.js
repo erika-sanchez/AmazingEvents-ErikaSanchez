@@ -14,19 +14,25 @@ function crearCard(objeto){
             </div>
             <div class="card-a d-flex  justify-content-evenly">
                 <a href="#" class="card-link">${ "$" + objeto.price}</a>
-                <a href="./pages/details.html?id=" class="card-link ml-1">Details</a>
+                <a href="./pages/details.html?id=${objeto._id}" class="card-link ml-1">Details</a>
             </div>
         </div>`
 }
-
-function imprimirCard (eventos){
-    containerTarjetas.innerHTML = "";
+function imprimirCard(eventos) {
+    let template = ""
     for (let evento of eventos) {
-        containerTarjetas.innerHTML += crearCard(evento)
+            template += crearCard(evento);
+        }
+        containerTarjetas.innerHTML += template;
     }
-}
+
 imprimirCard(data.events)
 
+function mensaje (){
+    const mensaje = document.createElement('p');
+        mensaje.textContent = 'No se encontraron resultados.';
+        containerTarjetas.appendChild(mensaje);
+}
 console.log (data.currentDate, data.events)
 
 // check
@@ -37,14 +43,23 @@ console.log(namesEventos);
 inputSearch.addEventListener('input', searchInputInfo);
 
 function searchInputInfo(e) {
-    let inputValue = e.target.value;
-    let arrayObjetos = filterSearch(data.events, inputValue);
+    let checkFiltradas = arraychecked(arraycheckbox)
+    console.log(checkFiltradas);
+    let inputValue = e.target.value.toLowerCase();
+    let arrayObjetos = filtrosCruzados(data.events, inputValue, checkFiltradas);
     console.log(arrayObjetos);
-    imprimirCard(arrayObjetos);
+    containerTarjetas.innerHTML = ""
+    if(arrayObjetos.length == 0 && inputValue.length > 0){
+        return mensaje()
+    }else if(arrayObjetos.length == 0){
+        return imprimirCard (data.events)
+    }else{
+        return imprimirCard(arrayObjetos);
+    }
 }
 
-function filterSearch(eventos, searchValue) {
-    return eventos.filter(evento => evento.name.toLowerCase().startsWith(searchValue.toLowerCase()));
+function filterSearch(lista, searchValue) {
+    return lista.filter(evento => evento.name.toLowerCase().includes(searchValue.toLowerCase()));
 }
 
 //check
@@ -73,45 +88,48 @@ function mostrarCheckbox(array, donde) {
 mostrarCheckbox(categoriasUnicas, contenedorInputs);
 
 let checkbox = document.querySelectorAll("input[type='checkbox']");
+console.log(checkbox);
+let arraycheckbox = Array.from(checkbox)
+
+function arraychecked (checkbox){
+    return checkbox.filter(checkbox => checkbox.checked == true).map(checkbox => checkbox.value)
+}
 
 contenedorInputs.addEventListener("change", (e) => {
-    if (e.target.checked) {
-        categoriasSeleccionadas.push(e.target.value); // Agregar la categoría al arreglo
-    } else {
-        categoriasSeleccionadas = categoriasSeleccionadas.filter(categoria => categoria !== e.target.value); // Elimina la categoría del arreglo
+
+    let listas = inputSearch.value
+    let checkFiltradas = arraychecked(arraycheckbox)
+    let filtrosarray = filtrosCruzados(data.events, listas, checkFiltradas)
+
+    containerTarjetas.innerHTML = ""
+    console.log(checkFiltradas);
+    console.log(filtrosarray);
+    if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0){
+        return mensaje()
+    }else if(filtrosarray.length == 0 && checkFiltradas > 0 ){
+        return mensaje()
+    }else if ( checkFiltradas.length == 0 ){
+        return imprimirCard( data.events)
     }
-
-    // Imprimir las categorías seleccionadas
-    console.log(categoriasSeleccionadas);
-
-    let categoriasFiltradas = filterCategory(data.events, categoriasSeleccionadas);
-    if (categoriasFiltradas.length == 0 ){
-        imprimirCard(data.events)
-    }else {
-        imprimirCard(categoriasFiltradas);
+    else {
+        return imprimirCard(filtrosarray);
     }
 });
 
-function filterCategory(lista, categorias) {
-    const aux = lista.filter(evento => categorias.includes(evento.category));
-    console.log(aux);
-    return aux;
+function filterCategory(evento, categorias) {
+    if(categorias.length == 0){
+        return evento
+    }else{
+        const aux = evento.filter(evento => categorias.includes(evento.category));
+        console.log(aux);
+        return aux;
+    }
+    
 }
 
-imprimirCard(data.events);
-
-
-  /* function crossedFilters(eventos, input, categoriasSeleccionadas) {
-    let first = filterSearch(eventos, input);
-    let second = filterCategory(eventos, categoriasSeleccionadas);
-    let filterFinal = first.filter(evento => second.includes(evento));
-    return filterFinal;
+function filtrosCruzados(eventos, lista, categoriasSeleccionadas) {
+    let filterSearchResult = filterSearch(eventos, lista);
+    let filterCategoryResult = filterCategory(filterSearchResult, categoriasSeleccionadas);
+    
+    return filterCategoryResult;
 }
-
-function filterSearch(eventos, searchValue) {
-    return eventos.filter(evento => evento.name.toLowerCase().startsWith(searchValue.toLowerCase()));
-}
-
-function filterCategory(eventos, categorias) {
-    return eventos.filter(evento => categorias.includes(evento.category));
-} */
