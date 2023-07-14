@@ -33,21 +33,21 @@ function mensaje (){
         mensaje.textContent = 'No se encontraron resultados.';
         containerTarjetas.appendChild(mensaje);
 }
-console.log (data.currentDate, data.events)
+// console.log (data.currentDate, data.events)
 
 // check
 let namesEventos = data.events.map(evento => evento.name.toLowerCase())
-console.log(namesEventos);
+// console.log(namesEventos);
 
 
 inputSearch.addEventListener('input', searchInputInfo);
 
 function searchInputInfo(e) {
     let checkFiltradas = arraychecked(arraycheckbox)
-    console.log(checkFiltradas);
+    // console.log(checkFiltradas);
     let inputValue = e.target.value.toLowerCase();
     let arrayObjetos = filtrosCruzados(data.events, inputValue, checkFiltradas);
-    console.log(arrayObjetos);
+    // console.log(arrayObjetos);
     containerTarjetas.innerHTML = ""
     if(arrayObjetos.length == 0 && inputValue.length > 0){
         return mensaje()
@@ -66,7 +66,7 @@ function filterSearch(lista, searchValue) {
 let categorias = data.events.map(evento => evento.category);
 let categoriasNoRepeat = new Set(categorias);
 let categoriasUnicas = Array.from(categoriasNoRepeat);
-console.log(categoriasNoRepeat);
+// console.log(categoriasNoRepeat);
 
 let categoriasSeleccionadas = []; // Array para almacenar las categorías seleccionadas
 
@@ -102,8 +102,8 @@ contenedorInputs.addEventListener("change", (e) => {
     let filtrosarray = filtrosCruzados(data.events, listas, checkFiltradas)
 
     containerTarjetas.innerHTML = ""
-    console.log(checkFiltradas);
-    console.log(filtrosarray);
+    // console.log(checkFiltradas);
+    // console.log(filtrosarray);
     if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0){
         return mensaje()
     }else if(filtrosarray.length == 0 && checkFiltradas > 0 ){

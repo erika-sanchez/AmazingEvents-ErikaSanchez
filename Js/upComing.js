@@ -40,7 +40,7 @@ let upComing = filtroEventos(data.events, data.currentDate);
 
 imprimirCard(upComing, containerTarjetas);
 
-console.log(data.currentDate, data.events);
+// console.log(data.currentDate, data.events);
 
 //
 
@@ -52,8 +52,8 @@ function searchInputInfo(e) {
     let filtrosarray = filtrosCruzados(upComing, listas, checkFiltradas);
 
     containerTarjetas.innerHTML = "";
-    console.log(checkFiltradas);
-    console.log(filtrosarray);
+    // console.log(checkFiltradas);
+    // console.log(filtrosarray);
     if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0) {
         return mensaje();
     } else if (filtrosarray.length == 0 && checkFiltradas.length > 0) {
@@ -72,7 +72,7 @@ function filterSearch(eventos, searchValue) {
 let categorias = data.events.map(evento => evento.category);
 let categoriasNoRepeat = new Set(categorias);
 let categoriasUnicas = Array.from(categoriasNoRepeat);
-console.log(categoriasNoRepeat);
+// console.log(categoriasNoRepeat);
 
 let categoriasSeleccionadas = [];
 
@@ -106,8 +106,8 @@ contenedorInputs.addEventListener("change", (e) => {
     let filtrosarray = filtrosCruzados(upComing, listas, checkFiltradas);
 
     containerTarjetas.innerHTML = "";
-    console.log(checkFiltradas);
-    console.log(filtrosarray);
+    // console.log(checkFiltradas);
+    // console.log(filtrosarray);
     if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0) {
         return mensaje();
     } else if (filtrosarray.length == 0 && checkFiltradas.length > 0) {

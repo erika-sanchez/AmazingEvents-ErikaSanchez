@@ -1,21 +1,21 @@
 // url.search.params 
 //URLSearchParams(string)
 
-console.log([window]);
-console.log(window.location);
+// console.log([window]);
+// console.log(window.location);
 let sectionTarjetas = document.getElementById("cajaTarjetas")
 
 let parametro= location.search
-console.log(parametro);
+// console.log(parametro);
 
 let params = new URLSearchParams(parametro)
-console.log(params);
+// console.log(params);
 
 let nombreId = params.get('id')//hace referencia al parametro, para que me devuelva el valor
-console.log(nombreId);
+// console.log(nombreId);
 
 let evento = data.events.find( event => event._id === nombreId)
-console.log(evento);
+// console.log(evento);
 
 function crearMaqueta(elementoHtml, objetoEvento){
         elementoHtml.innerHTML += `<div class="caja card col-5" ;">

@@ -43,7 +43,7 @@ let pastEvents  = filtroEventos(data.events, data.currentDate)
 
 imprimirCard(pastEvents, containerTarjetas);
 
-console.log(data.currentDate, data.events);
+// console.log(data.currentDate, data.events);
 
 //
 
@@ -55,8 +55,8 @@ function searchInputInfo(e) {
     let filtrosarray = filtrosCruzados(pastEvents, listas, checkFiltradas);
 
     containerTarjetas.innerHTML = "";
-    console.log(checkFiltradas);
-    console.log(filtrosarray);
+    // console.log(checkFiltradas);
+    // console.log(filtrosarray);
     if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0) {
         return mensaje();
     } else if (filtrosarray.length == 0 && checkFiltradas.length > 0) {
@@ -108,8 +108,8 @@ contenedorInputs.addEventListener("change", (e) => {
     let filtrosarray = filtrosCruzados(pastEvents, listas, checkFiltradas);
 
     containerTarjetas.innerHTML = "";
-    console.log(checkFiltradas);
-    console.log(filtrosarray);
+    // console.log(checkFiltradas);
+    // console.log(filtrosarray);
     if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0) {
         return mensaje();
     } else if (filtrosarray.length == 0 && checkFiltradas.length > 0) {
