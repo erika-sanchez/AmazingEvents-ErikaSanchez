@@ -1,5 +1,5 @@
+import {  } from "../modules/function.js";
 let containerTarjetas = document.getElementById("cajaTarjetas")
-let boton = document.getElementById('boton')
 let inputSearch = document.getElementById('inputTypeSearch')
 let contenedorInputs = document.getElementById('contenedorInputs')
 
@@ -20,13 +20,13 @@ function crearCard(objeto){
 }
 function imprimirCard(eventos) {
     let template = ""
-    for (let evento of eventos) {
+    for (let evento of eventos) {//recorrer , asigna 
             template += crearCard(evento);
         }
         containerTarjetas.innerHTML += template;
     }
 
-imprimirCard(data.events)
+// imprimirCard(data.events)
 
 function mensaje (){
     const mensaje = document.createElement('p');
@@ -35,40 +35,59 @@ function mensaje (){
 }
 // console.log (data.currentDate, data.events)
 
-// check
-let namesEventos = data.events.map(evento => evento.name.toLowerCase())
-// console.log(namesEventos);
+let events;
 
+fetch ("https://mindhub-xj03.onrender.com/api/amazing")
+.then(respuesta => respuesta.json())
+.then ( data => {
+        events = data.events;
+        let categorias = data.events.map(evento => evento.category);
+        let categoriasNoRepeat = new Set(categorias);
+        let categoriasUnicas = Array.from(categoriasNoRepeat);
+        mostrarCheckbox(categoriasUnicas, contenedorInputs);
+        imprimirCard(events, containerTarjetas)
+        let checkbox = document.querySelectorAll("input[type='checkbox']");
+        let arraycheckbox = Array.from(checkbox)
+        console.log(arraycheckbox);
 
-inputSearch.addEventListener('input', searchInputInfo);
+        contenedorInputs.addEventListener("change", (e) => {
 
-function searchInputInfo(e) {
-    let checkFiltradas = arraychecked(arraycheckbox)
-    // console.log(checkFiltradas);
-    let inputValue = e.target.value.toLowerCase();
-    let arrayObjetos = filtrosCruzados(data.events, inputValue, checkFiltradas);
-    // console.log(arrayObjetos);
-    containerTarjetas.innerHTML = ""
-    if(arrayObjetos.length == 0 && inputValue.length > 0){
-        return mensaje()
-    }else if(arrayObjetos.length == 0){
-        return imprimirCard (data.events)
-    }else{
-        return imprimirCard(arrayObjetos);
-    }
-}
+            let listas = inputSearch.value.toLowerCase()
+            let checkFiltradas = arraychecked(arraycheckbox)
+            let filtrosarray = filtrosCruzados(events, listas, checkFiltradas)
+            console.log("Evento", filtrosarray);
+            containerTarjetas.innerHTML = ""
+            if (filtrosarray.length == 0){
+                mensaje()
+            }else{
+                imprimirCard(filtrosarray)
+            }
+        });
+
+        inputSearch.addEventListener('input', searchInputInfo);
+
+        function searchInputInfo(e) {
+            let listas = inputSearch.value.toLowerCase()
+            let checkFiltradas = arraychecked(arraycheckbox)
+            let filtrosarray = filtrosCruzados(events, listas, checkFiltradas)
+            console.log("Evento", filtrosarray);
+            containerTarjetas.innerHTML = ""
+            if (filtrosarray.length == 0){
+                mensaje()
+            }else{
+                imprimirCard(filtrosarray)
+            }
+        }
+    })
+.catch((error)=>{
+    console.error("Error fetching data:",error);
+})
+
+let categoriasSeleccionadas = [];
 
 function filterSearch(lista, searchValue) {
     return lista.filter(evento => evento.name.toLowerCase().includes(searchValue.toLowerCase()));
 }
-
-//check
-let categorias = data.events.map(evento => evento.category);
-let categoriasNoRepeat = new Set(categorias);
-let categoriasUnicas = Array.from(categoriasNoRepeat);
-// console.log(categoriasNoRepeat);
-
-let categoriasSeleccionadas = []; // Array para almacenar las categorías seleccionadas
 
 function crearCheckbox(category) {
     return `
@@ -85,43 +104,15 @@ function mostrarCheckbox(array, donde) {
     }
 }
 
-mostrarCheckbox(categoriasUnicas, contenedorInputs);
-
-let checkbox = document.querySelectorAll("input[type='checkbox']");
-console.log(checkbox);
-let arraycheckbox = Array.from(checkbox)
-
 function arraychecked (checkbox){
     return checkbox.filter(checkbox => checkbox.checked == true).map(checkbox => checkbox.value)
 }
-
-contenedorInputs.addEventListener("change", (e) => {
-
-    let listas = inputSearch.value
-    let checkFiltradas = arraychecked(arraycheckbox)
-    let filtrosarray = filtrosCruzados(data.events, listas, checkFiltradas)
-
-    containerTarjetas.innerHTML = ""
-    // console.log(checkFiltradas);
-    // console.log(filtrosarray);
-    if (filtrosarray.length == 0 && checkFiltradas.length == 0 && listas.length > 0 || checkFiltradas.length == 0 && listas.length > 0){
-        return mensaje()
-    }else if(filtrosarray.length == 0 && checkFiltradas > 0 ){
-        return mensaje()
-    }else if ( checkFiltradas.length == 0 ){
-        return imprimirCard( data.events)
-    }
-    else {
-        return imprimirCard(filtrosarray);
-    }
-});
 
 function filterCategory(evento, categorias) {
     if(categorias.length == 0){
         return evento
     }else{
-        const aux = evento.filter(evento => categorias.includes(evento.category));
-        console.log(aux);
+        const aux = evento.filter(evento => categorias.includes(evento.category) || categorias.length == 0);
         return aux;
     }
     
@@ -130,6 +121,7 @@ function filterCategory(evento, categorias) {
 function filtrosCruzados(eventos, lista, categoriasSeleccionadas) {
     let filterSearchResult = filterSearch(eventos, lista);
     let filterCategoryResult = filterCategory(filterSearchResult, categoriasSeleccionadas);
-    
+    console.log(filterCategoryResult);
     return filterCategoryResult;
 }
+

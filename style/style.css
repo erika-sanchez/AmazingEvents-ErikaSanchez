@@ -40,12 +40,12 @@ main{
     
 }
 #cajaTarjetas .card{
-    height: 29rem;
+    min-height: 29rem;
 
 }
 
 #cajaTarjetas .caja{
-    height: 34rem;
+    min-height: 34rem;
 }
 
 .card img{
@@ -58,4 +58,19 @@ main{
 footer{
     min-height: 10vh !important;
     margin-top: 1rem;
+}
+
+.title{
+    text-align: center;
+    font-size:medium;
+}
+/* .mainstats{
+    background-color: bisque;
+}
+.footerstats{
+    background-color: bisque;
+} */
+
+.table-hover{
+
 }

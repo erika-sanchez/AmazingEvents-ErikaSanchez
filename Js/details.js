@@ -3,19 +3,26 @@
 
 // console.log([window]);
 // console.log(window.location);
-let sectionTarjetas = document.getElementById("cajaTarjetas")
+const sectionTarjetas = document.getElementById("cajaTarjetas")
 
-let parametro= location.search
-// console.log(parametro);
-
-let params = new URLSearchParams(parametro)
-// console.log(params);
-
-let nombreId = params.get('id')//hace referencia al parametro, para que me devuelva el valor
-// console.log(nombreId);
-
-let evento = data.events.find( event => event._id === nombreId)
-// console.log(evento);
+let events
+fetch ("https://mindhub-xj03.onrender.com/api/amazing")
+.then(respuesta => respuesta.json())
+.then ( data => {
+    events = data.events;
+    let parametro= location.search
+    // console.log(parametro);
+    let params = new URLSearchParams(parametro)
+    // console.log(params);
+    let nombreId = params.get('id')//hace referencia al parametro, para que me devuelva el valor
+    // console.log(nombreId);
+    events = events.find( event => event._id == nombreId) // el metodo de find es que usa el primer elemento que cumpla con la condicion
+    // console.log(evento);
+    crearMaqueta(sectionTarjetas, events)
+})
+.catch(error => {
+    console.error("Error fetching data:", error);
+});
 
 function crearMaqueta(elementoHtml, objetoEvento){
         elementoHtml.innerHTML += `<div class="caja card col-5" ;">
@@ -33,5 +40,5 @@ function crearMaqueta(elementoHtml, objetoEvento){
         </div>`
 }
 
-crearMaqueta(sectionTarjetas, evento)
+
 
