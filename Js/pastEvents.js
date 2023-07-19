@@ -1,4 +1,4 @@
-import {  } from "../modules/function.js";
+// import {  } from "../modules/function.js";
 let containerTarjetas = document.getElementById("cajaTarjetas")
 let inputSearch = document.getElementById('inputTypeSearch');
 let contenedorInputs = document.getElementById('contenedorInputs');
@@ -25,18 +25,9 @@ function imprimirCard(eventos,containerTarjetas) {
     }
     
 
-// function filtroEventos( eventos, currentDate){
-//     let pastEvents = []
-//     for (let evento of eventos) {
-//         if (evento.date < currentDate){
-//             pastEvents.push(evento)
-//         }
-//     }
-//     return pastEvents
-// }
 function mensaje() {
     const mensaje = document.createElement('p');
-    mensaje.textContent = 'No se encontraron resultados.';
+    mensaje.textContent = 'no results were found';
     containerTarjetas.appendChild(mensaje);
 }
 

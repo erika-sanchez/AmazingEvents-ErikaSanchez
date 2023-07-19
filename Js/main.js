@@ -1,4 +1,4 @@
-import {  } from "../modules/function.js";
+// /* import { imprimirCard, mensaje, mostrarCheckbox,arraychecked,filtrosCruzados } from "../modules/function.js"; */
 let containerTarjetas = document.getElementById("cajaTarjetas")
 let inputSearch = document.getElementById('inputTypeSearch')
 let contenedorInputs = document.getElementById('contenedorInputs')
@@ -30,7 +30,7 @@ function imprimirCard(eventos) {
 
 function mensaje (){
     const mensaje = document.createElement('p');
-        mensaje.textContent = 'No se encontraron resultados.';
+        mensaje.textContent = 'no results were found';
         containerTarjetas.appendChild(mensaje);
 }
 // console.log (data.currentDate, data.events)
@@ -49,7 +49,7 @@ fetch ("https://mindhub-xj03.onrender.com/api/amazing")
         let checkbox = document.querySelectorAll("input[type='checkbox']");
         let arraycheckbox = Array.from(checkbox)
         console.log(arraycheckbox);
-
+        
         contenedorInputs.addEventListener("change", (e) => {
 
             let listas = inputSearch.value.toLowerCase()
@@ -124,4 +124,3 @@ function filtrosCruzados(eventos, lista, categoriasSeleccionadas) {
     console.log(filterCategoryResult);
     return filterCategoryResult;
 }
-

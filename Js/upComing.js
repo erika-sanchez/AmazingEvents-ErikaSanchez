@@ -32,7 +32,7 @@ function imprimirCard(eventos, containerTarjetas) {
 
 function mensaje() {
     const mensaje = document.createElement('p');
-    mensaje.textContent = 'No se encontraron resultados.';
+    mensaje.textContent = 'no results were found';
     containerTarjetas.appendChild(mensaje);
 }
 
